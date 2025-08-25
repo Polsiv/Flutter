@@ -1,46 +1,29 @@
+import 'package:fl_componentes/router/app_router.dart';
 import 'package:flutter/material.dart';
-import 'package:fl_componentes/screens/screens.dart';
 
 void main() => runApp(const MyApp());
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
 
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
+    const MyApp({super.key});
 
-      title: 'Material App',
+    @override
+    Widget build(BuildContext context) {
+    
+        return MaterialApp(
 
-      //home: HomeScreen()
-
-      initialRoute: 'home',
-
-      routes: {
-        'home': (BuildContext context) => const HomeScreen(),
-        'alert': (BuildContext context) => const AlertScreen(),
-        'card': (BuildContext context) => const CardScreen(),
-        'listview1': (BuildContext context) => const Listview1Screen(),
-        'listview2': (BuildContext context) => const Listview2Screen(),
-      },
-
-      onGenerateRoute: (settings) {
-        //print(settings);
-
-        return MaterialPageRoute(builder: (context) => const AlertScreen());
-      },
-
-      /*
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Material App Bar'),
-        ),
-        body: const Center(
-          child: Text('Hola Mundo...'),
-        ),
-      ),
-      */
-    );
-  }
+          debugShowCheckedModeBanner: false,
+          title: 'Material App',
+          initialRoute: AppRoutes.initialRoute,
+          routes: AppRoutes.getAppRoutes(),
+          onGenerateRoute: AppRoutes.onGenerateRoute,
+          theme: ThemeData.light().copyWith(
+            primaryColor: Colors.indigo,
+            appBarTheme: AppBarTheme(
+              backgroundColor: Colors.green,
+              elevation:0
+            )
+          ),
+        );
+    }
 }
