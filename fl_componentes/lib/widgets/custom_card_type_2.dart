@@ -1,15 +1,18 @@
 import 'package:fl_componentes/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 
+
 class CustomCardType2 extends StatelessWidget {
 
   final String imageUrl;
   final String? name;
+  final String? description;
   
   const CustomCardType2({
     Key? key, 
     required this.imageUrl, 
-    this.name
+    this.name,
+    this.description
   }) : super(key: key);
 
 
@@ -34,12 +37,18 @@ class CustomCardType2 extends StatelessWidget {
             fadeInDuration: const Duration(milliseconds: 300),
           ),
 
-
           if ( name != null )
             Container(
               alignment: AlignmentDirectional.centerEnd,
               padding: const EdgeInsets.only( right: 20, top: 10, bottom: 10 ),
               child: Text( name ?? 'No Title' )
+            ),
+
+          if ( description != null )
+            Container(
+              alignment: AlignmentDirectional.centerEnd,
+              padding: const EdgeInsets.only( right: 20, top: 10, bottom: 10 ),
+              child: Text( description ?? 'No description' )
             )
 
         ],
