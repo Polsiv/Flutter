@@ -9,15 +9,15 @@
 .vscode/
 *.iml
 
-# --- Flutter / Dart ---
-.dart_tool/
-.packages
-.packages.generated
-.pub-cache/
-.pub/
-build/
-.flutter-plugins
-.flutter-plugins-dependencies
+# --- Flutter / Dart (any subdirectory) ---
+**/.dart_tool/
+**/.packages
+**/.packages.generated
+**/.pub-cache/
+**/.pub/
+**/build/
+**/.flutter-plugins
+**/.flutter-plugins-dependencies
 **/generated_plugin_registrant.dart
 **/doc/api/
 
@@ -29,7 +29,7 @@ build/
 **/android/local.properties
 **/android/key.properties
 **/android/**/GeneratedPluginRegistrant.java
-*.jks
+**/*.jks
 
 # --- iOS / macOS ---
 **/ios/Pods/
@@ -56,11 +56,11 @@ build/
 **/linux/flutter/generated_plugins.cmake
 
 # --- Coverage & Symbols ---
-coverage/
-app.*.symbols
+**/coverage/
+**/app.*.symbols
 
-# --- Keep lockfiles only in apps ---
-# If these are APPs -> commit pubspec.lock
-# If these are PACKAGES -> ignore them
-# /project1/pubspec.lock
-# /project2/pubspec.lock
+# --- Lockfiles ---
+# For apps: keep pubspec.lock
+# For packages: ignore pubspec.lock
+# Uncomment as needed:
+# **/pubspec.lock
