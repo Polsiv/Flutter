@@ -43,31 +43,56 @@ class _HeroEditScreenState extends State<HeroEditScreen> {
   }
 
   Future<void> _saveHero() async {
-    if (!_formKey.currentState!.validate()) return;
+  if (!_formKey.currentState!.validate()) return;
 
-    final hero = HeroModel(
-      id: widget.hero?.id,
-      nombre: nombreCtrl.text,
-      bio: bioCtrl.text,
-      img: imgCtrl.text,
-      aparicion: aparicionCtrl.text,
-      casa: casaCtrl.text,
-    );
+  final hero = HeroModel(
+    id: widget.hero?.id,
+    nombre: nombreCtrl.text,
+    bio: bioCtrl.text,
+    img: imgCtrl.text,
+    aparicion: aparicionCtrl.text,
+    casa: casaCtrl.text,
+  );
 
-    final provider = Provider.of<HeroesProvider>(context, listen: false);
+  final provider = Provider.of<HeroesProvider>(context, listen: false);
 
-    if (widget.hero == null) {
-      await provider.addHero(hero);
-      ScaffoldMessenger.of(context)
-          .showSnackBar(const SnackBar(content: Text('Héroe creado')));
+  try {
+    final response = widget.hero == null
+        ? await provider.addHero(hero)
+        : await provider.updateHero(hero);
+
+    if (response['ok'] == true) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(widget.hero == null
+              ? 'Héroe creado correctamente'
+              : 'Héroe actualizado correctamente'),
+        ),
+      );
+      Navigator.pop(context);
+      await provider.loadHeroes();
     } else {
-      await provider.updateHero(hero);
-      ScaffoldMessenger.of(context)
-          .showSnackBar(const SnackBar(content: Text('Héroe actualizado')));
-    }
+      final msg = response['msg'] ?? 'Error desconocido';
 
-    Navigator.pop(context);
+
+      if (msg.contains('Hable con el Administrador') &&
+          response['err']?['parent']?['code'] == 'ER_TRUNCATED_WRONG_VALUE') {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Fecha inválida.')),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('⚠️ $msg')),
+        );
+      }
+    }
+  } catch (e) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('❌ Error al guardar: ${e.toString()}')),
+    );
   }
+}
+
 
   @override
   Widget build(BuildContext context) {

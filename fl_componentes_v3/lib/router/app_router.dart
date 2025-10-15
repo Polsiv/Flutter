@@ -1,5 +1,4 @@
 //import 'package:fl_componentes/models/menu_option.dart';
-import 'package:fl_componentes/screens/hero_edit_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:fl_componentes/screens/screens.dart';
 import 'package:fl_componentes/models/models.dart';
@@ -17,8 +16,7 @@ class AppRoutes {
     MenuOption(route: 'login', name: 'Login', screen: const LoginScreen(),icon: Icons.login, ),
     MenuOption(route: 'usuario', name: 'Usuario',screen: const UsuarioScreen(),icon: Icons.person, ),
     MenuOption(route: 'registro', name: 'Registro', screen : const RegisterScreen(), icon: Icons.app_registration,),
-    MenuOption(route: 'listar_heroes', name: 'Listar Heroes', screen : const HeroesListScreen(), icon: Icons.app_registration,),
-    MenuOption(route: 'editar_heroes', name: 'Editar Heroes', screen : const HeroEditScreen(), icon: Icons.app_registration,),
+    MenuOption(route: 'listar_heroes', name: 'Heroes', screen : const HeroesListScreen(), icon: Icons.app_registration,),
   ];
 
 

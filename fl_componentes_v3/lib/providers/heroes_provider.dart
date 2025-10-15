@@ -11,18 +11,23 @@ class HeroesProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> addHero(HeroModel hero) async {
-    await heroesService.createHero(hero);
-    await loadHeroes();
+ Future<Map<String, dynamic>> addHero(HeroModel hero) async {
+  return await heroesService.createHero(hero);
   }
 
-  Future<void> updateHero(HeroModel hero) async {
-    await heroesService.updateHero(hero);
+
+  Future<Map<String, dynamic>> updateHero(HeroModel hero) async {
+    final result = await heroesService.updateHero(hero);
     await loadHeroes();
+    return result;
   }
 
-  Future<void> deleteHero(int id) async {
-    await heroesService.deleteHero(id);
+
+ Future<String?> deleteHero(int id) async {
+  final result = await heroesService.deleteHero(id);
+  if (result == null) {
     await loadHeroes();
+    }
+  return result;
   }
 }

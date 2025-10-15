@@ -65,9 +65,12 @@ class _HeroesListScreenState extends State<HeroesListScreen> {
                     ),
                   ),
                   onDelete: () async {
-                    await heroesProvider.deleteHero(hero.id!);
+                    final result = await heroesProvider.deleteHero(hero.id!);
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Héroe eliminado')),
+                      SnackBar(
+                        content: Text(result ?? 'Héroe eliminado'),
+                        backgroundColor: result == null ? null : Colors.red,
+                      ),
                     );
                   },
                 );

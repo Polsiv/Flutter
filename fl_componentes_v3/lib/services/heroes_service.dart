@@ -58,35 +58,64 @@ class HeroesService extends ChangeNotifier {
 }
 
 
-  Future<String?> createHero(HeroModel hero) async {
-    final url = Uri.http(_baseUrl, '/api/heroes');
+  Future<Map<String, dynamic>> createHero(HeroModel hero) async {
+  final url = Uri.http(_baseUrl, '/api/heroes');
     final headers = await _headers();
 
-    final resp = await http.post(url,
-        headers: headers, body: json.encode(hero.toJson()));
+    final resp = await http.post(
+      url,
+      headers: headers,
+      body: json.encode(hero.toJson()),
+    );
 
-    if (resp.statusCode == 201) {
-      notifyListeners();
-      return null;
-    } else {
-      return 'Error al crear el héroe';
+    print(resp.body);
+
+    try {
+      final data = json.decode(resp.body);
+
+      if (resp.statusCode == 201 || data['ok'] == true) {
+        notifyListeners();
+      }
+
+      return data; // <-- devolvemos la respuesta completa del backend
+    } catch (e) {
+      return {
+        'ok': false,
+        'msg': 'Error al procesar la respuesta del servidor',
+        'error': e.toString(),
+      };
     }
   }
 
-  Future<String?> updateHero(HeroModel hero) async {
+
+  Future<Map<String, dynamic>> updateHero(HeroModel hero) async {
     final url = Uri.http(_baseUrl, '/api/heroes/${hero.id}');
     final headers = await _headers();
 
-    final resp = await http.put(url,
-        headers: headers, body: json.encode(hero.toJson()));
+    final resp = await http.put(
+      url,
+      headers: headers,
+      body: json.encode(hero.toJson()),
+    );
 
-    if (resp.statusCode == 200) {
-      notifyListeners();
-      return null;
-    } else {
-      return 'Error al actualizar el héroe';
+    try {
+      final data = json.decode(resp.body);
+
+      if (resp.statusCode == 200 || data['ok'] == true) {
+        notifyListeners();
+      }
+
+      return data; // 🔹 devolvemos la respuesta completa del backend
+    } catch (e) {
+      return {
+        'ok': false,
+        'msg': 'Error al procesar la respuesta del servidor',
+        'error': e.toString(),
+      };
     }
   }
+
+
 
   Future<String?> deleteHero(int id) async {
     final url = Uri.http(_baseUrl, '/api/heroes/$id');
@@ -95,11 +124,9 @@ class HeroesService extends ChangeNotifier {
     final resp = await http.delete(url, headers: headers);
 
     if (resp.statusCode == 200 || resp.statusCode == 204) {
-      heroes.removeWhere((h) => h.id == id);
-      notifyListeners();
-      return null;
+      return null; // éxito
     } else {
-      return 'Error al eliminar el héroe';
+      return 'Error al eliminar héroe';
     }
   }
 }
